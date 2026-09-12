@@ -51,12 +51,20 @@ def validate(root: Path, full: bool = True) -> dict:
                 raise ValueError(f"Array header mismatch: {relative}")
             if full and not np.isfinite(array).all():
                 raise ValueError(f"Nonfinite data: {relative}")
-    return {"files": len(seen), "bytes": sum(e["bytes"] for e in manifest["files"]),
-            "full_checksums": full, "version": manifest["version"]}
+    return {
+        "files": len(seen),
+        "bytes": sum(e["bytes"] for e in manifest["files"]),
+        "full_checksums": full,
+        "version": manifest["version"],
+    }
 
 
-def download(root: Path, repo: str = "skywalker-p/PAIR", revision: str = "v1.0.0",
-             patterns: list[str] | None = None) -> Path:
+def download(
+    root: Path,
+    repo: str = "skywalker-p/PAIR",
+    revision: str = "v1.0.0",
+    patterns: list[str] | None = None,
+) -> Path:
     """Download a pinned dataset release, honoring the user's HF proxy settings.
 
     Args:
@@ -69,6 +77,12 @@ def download(root: Path, repo: str = "skywalker-p/PAIR", revision: str = "v1.0.0
         The resolved local dataset directory. Partial downloads require targeted checks.
     """
     from huggingface_hub import snapshot_download
-    snapshot_download(repo_id=repo, repo_type="dataset", revision=revision,
-                      local_dir=root, allow_patterns=patterns)
+
+    snapshot_download(
+        repo_id=repo,
+        repo_type="dataset",
+        revision=revision,
+        local_dir=root,
+        allow_patterns=patterns,
+    )
     return root.resolve()

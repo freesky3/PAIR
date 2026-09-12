@@ -18,6 +18,7 @@ COLOR_NAMES = ["Neutral Light", "Earth & Dark", "Cool Tones", "Green Nature", "W
 @dataclass(frozen=True)
 class Recording:
     """An anonymized recording identity in the original processing order."""
+
     index: int
     subject: str
     recording: str
@@ -38,8 +39,10 @@ def recordings(root: Path) -> list[Recording]:
     indices = [int(row["source_index"]) for row in rows]
     if len(indices) != len(set(indices)):
         raise ValueError("Duplicate recording source indices.")
-    return [Recording(int(r["source_index"]), r["subject_id"], r["recording_id"], r["filename"])
-            for r in rows]
+    return [
+        Recording(int(r["source_index"]), r["subject_id"], r["recording_id"], r["filename"])
+        for r in rows
+    ]
 
 
 def _path(root: Path, record: Recording, condition: str, feature: str) -> Path:
@@ -53,11 +56,18 @@ def _labels(root: Path, task: str) -> torch.Tensor:
         rows = list(csv.DictReader(handle))
     if len(rows) != 250 or [int(r["stimulus_index_0based"]) for r in rows] != list(range(250)):
         raise ValueError("Stimulus labels must contain 250 ordered clip indices.")
-    columns = {"20-c": "semantic_20class_1based", "4-c": "semantic_4class_0based",
-               "number": "number_class_0based", "face": "face", "human": "human"}
+    columns = {
+        "20-c": "semantic_20class_1based",
+        "4-c": "semantic_4class_0based",
+        "number": "number_class_0based",
+        "face": "face",
+        "human": "human",
+    }
     if task == "fast_slow":
-        return (torch.tensor([float(r["optical_flow_score"]) for r in rows],
-                             dtype=torch.float32) > 0.6427).long()
+        return (
+            torch.tensor([float(r["optical_flow_score"]) for r in rows], dtype=torch.float32)
+            > 0.6427
+        ).long()
     if task == "color":
         values = [COLOR_NAMES.index(r["dominant_color_group"]) for r in rows]
     else:
@@ -76,8 +86,11 @@ class ContentEpochs(Dataset):
     """
 
     def __init__(self, root: Path, record: Recording, config: Experiment, augment: bool):
-        data = torch.from_numpy(np.load(_path(root, record, config.condition,
-                                             config.actual_feature), allow_pickle=False)).float()
+        data = torch.from_numpy(
+            np.load(
+                _path(root, record, config.condition, config.actual_feature), allow_pickle=False
+            )
+        ).float()
         if config.actual_feature != "raw":
             data = data[0 if config.actual_feature == "psd" else 1].reshape(250, 62, 5)
         else:
@@ -109,8 +122,9 @@ class StateEpochs(Dataset):
     def __init__(self, root: Path, record: Recording, config: Experiment):
         self.conditions = []
         for condition in ["watch", "recall"]:
-            data = torch.from_numpy(np.load(_path(root, record, condition, config.feature),
-                                           allow_pickle=False)).float()
+            data = torch.from_numpy(
+                np.load(_path(root, record, condition, config.feature), allow_pickle=False)
+            ).float()
             if config.feature == "raw":
                 data = data.reshape(250, 62, -1)
                 if condition == "recall":
@@ -152,8 +166,17 @@ def make_loaders(root: Path, record: Recording, config: Experiment):
         indices = list(range(len(train)))
         random.shuffle(indices)
         train_indices, valid_indices = indices[:200], indices[200:]
-    train_loader = DataLoader(Subset(train, train_indices), batch_size=config.batch_size,
-                              shuffle=True, drop_last=False, num_workers=config.num_workers)
-    valid_loader = DataLoader(Subset(valid, valid_indices), batch_size=config.batch_size,
-                              shuffle=False, num_workers=config.num_workers)
+    train_loader = DataLoader(
+        Subset(train, train_indices),
+        batch_size=config.batch_size,
+        shuffle=True,
+        drop_last=False,
+        num_workers=config.num_workers,
+    )
+    valid_loader = DataLoader(
+        Subset(valid, valid_indices),
+        batch_size=config.batch_size,
+        shuffle=False,
+        num_workers=config.num_workers,
+    )
     return train_loader, valid_loader, {"train": train_indices, "validation": valid_indices}
