@@ -1,0 +1,13 @@
+[experiment]
+mode = "paper"
+task = "20-c"
+model = "GCN_LSTM"
+feature = "raw"
+condition = "recall"
+seed = 42
+epochs = 400
+patience = 40
+learning_rate = 0.001
+weight_decay = 0.0001
+batch_size = 16
+num_workers = 4

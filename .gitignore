@@ -1,6 +1,12 @@
-data/
+/data/
 __pycache__/
 *.pyc
 .venv/
-images/
+/images/
 *.log
+/outputs/
+.pytest_cache/
+.ruff_cache/
+dist/
+*.egg-info/
+.cache/

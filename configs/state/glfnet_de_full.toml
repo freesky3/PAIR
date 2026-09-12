@@ -1,0 +1,16 @@
+# Available archived state model fixes its local width to four bands.
+# Paper mode rejects this five-band input; --mode corrected makes it runnable.
+# The historical full-band table result cannot be reproduced from that model file.
+[experiment]
+mode = "paper"
+task = "state"
+model = "glfnet_mlp"
+feature = "de"
+condition = "watch"
+remove_alpha = false
+seed = 42
+epochs = 400
+patience = 40
+learning_rate = 0.001
+batch_size = 128
+num_workers = 4

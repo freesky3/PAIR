@@ -1,0 +1,14 @@
+[experiment]
+mode = "paper"
+task = "state"
+model = "glfnet_mlp"
+feature = "de"
+condition = "watch"
+remove_alpha = true
+seed = 42
+epochs = 400
+patience = 40
+learning_rate = 0.001
+weight_decay = 0.0001
+batch_size = 128
+num_workers = 4

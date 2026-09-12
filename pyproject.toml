@@ -1,0 +1,59 @@
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[project]
+name = "pair-eeg"
+version = "0.2.0"
+description = "PAIR EEG dataset tools, archived-score reproduction, and explicit benchmark protocols"
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE", "THIRD_PARTY_NOTICES.md"]
+requires-python = ">=3.11,<3.12"
+dependencies = [
+  "numpy==2.1.2", "scipy==1.16.1", "matplotlib==3.10.6", "mne==1.11.0",
+  "huggingface-hub>=0.34.4,<2",
+]
+
+[project.optional-dependencies]
+train = ["torch==2.5.1", "einops==0.8.2", "torch-geometric==2.6.1", "scikit-learn==1.7.1"]
+cuda = ["torch==2.5.1", "einops==0.8.2", "torch-geometric==2.6.1", "scikit-learn==1.7.1"]
+
+[project.scripts]
+pair-eeg = "pair_eeg.cli:main"
+
+[dependency-groups]
+dev = ["pytest>=8,<9", "ruff>=0.9,<1"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/pair_eeg"]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+exclude = ["archived_code"]
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F", "I"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.uv]
+conflicts = [[{extra = "train"}, {extra = "cuda"}]]
+
+[tool.uv.sources]
+torch = [
+  {index = "pytorch-cpu", extra = "train"},
+  {index = "pytorch-cu121", extra = "cuda"},
+]
+
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true
+
+[[tool.uv.index]]
+name = "pytorch-cu121"
+url = "https://download.pytorch.org/whl/cu121"
+explicit = true

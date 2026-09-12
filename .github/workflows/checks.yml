@@ -1,0 +1,19 @@
+name: checks
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  cpu:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          version: "0.9.18"
+      - run: uv sync --locked --extra train
+      - run: uv run --locked --extra train ruff check src scripts tests
+      - run: uv run --locked --extra train ruff format --check src scripts tests
+      - run: uv run --locked --extra train pytest -q
+      - run: uv run --locked --extra train pair-eeg reproduce-paper --output outputs/paper

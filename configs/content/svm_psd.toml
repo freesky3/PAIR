@@ -1,0 +1,12 @@
+# Paper mode intentionally loads raw EEG, matching the archived routing error.
+# This mislabeled historical result was removed from the revised paper tables.
+# --mode corrected loads PSD. New results are not substitutes for archived scores.
+[experiment]
+mode = "paper"
+task = "4-c"
+model = "svm"
+feature = "psd"
+condition = "watch"
+seed = 42
+batch_size = 16
+num_workers = 4
