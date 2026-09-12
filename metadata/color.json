@@ -1,0 +1,41 @@
+{
+    "white": "Neutral Light",
+    "White": "Neutral Light",
+    "grey": "Neutral Light",
+    "gray": "Neutral Light",
+    "light grey": "Neutral Light",
+    "light gray": "Neutral Light",
+    "dark grey": "Neutral Light",
+    "dark gray": "Neutral Light",
+    "silver": "Neutral Light",
+  
+    "black": "Earth & Dark",
+    "Black": "Earth & Dark",
+    "brown": "Earth & Dark",
+    "dark brown": "Earth & Dark",
+    "sandy brown": "Earth & Dark",
+    "beige": "Earth & Dark",
+    "tan": "Earth & Dark",
+  
+    "blue": "Cool Tones",
+    "Blue": "Cool Tones",
+    "dark blue": "Cool Tones",
+    "light blue": "Cool Tones",
+    "purple": "Cool Tones",
+  
+    "green": "Green Nature",
+    "Green": "Green Nature",
+    "light green": "Green Nature",
+    "teal": "Green Nature",
+  
+    "red": "Warm Vibrant",
+    "orange": "Warm Vibrant",
+    "Orange": "Warm Vibrant",
+    "warm orange": "Warm Vibrant",
+    "yellow": "Warm Vibrant",
+    "gold": "Warm Vibrant",
+    "pink": "Warm Vibrant",
+    "rose gold": "Warm Vibrant",
+    "multi-colored": "Warm Vibrant",
+    "black and white": "Warm Vibrant"
+  }
