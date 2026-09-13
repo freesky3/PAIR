@@ -76,13 +76,32 @@ def download(
     Returns:
         The resolved local dataset directory. Partial downloads require targeted checks.
     """
-    from huggingface_hub import snapshot_download
+    from huggingface_hub import HfApi, hf_hub_download, snapshot_download
+    from huggingface_hub.errors import EntryNotFoundError
+
+    # Pin every request to one commit so metadata and transport parts cannot drift.
+    commit = HfApi().dataset_info(repo, revision=revision).sha
+    try:
+        transport_path = hf_hub_download(
+            repo, "transport.json", repo_type="dataset", revision=commit, local_dir=root
+        )
+    except EntryNotFoundError:
+        transport_path = None
+    resolved = patterns
+    if transport_path is not None:
+        from pair_eeg.data.chunks import download_paths
+
+        resolved = download_paths(json.loads(Path(transport_path).read_text()), patterns)
 
     snapshot_download(
         repo_id=repo,
         repo_type="dataset",
-        revision=revision,
+        revision=commit,
         local_dir=root,
-        allow_patterns=patterns,
+        allow_patterns=resolved,
     )
+    if transport_path is not None:
+        from pair_eeg.data.chunks import assemble
+
+        assemble(root, patterns)
     return root.resolve()

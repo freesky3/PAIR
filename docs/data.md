@@ -1,6 +1,6 @@
 # Dataset release
 
-The Hugging Face repository is `skywalker-p/PAIR`, with a planned `v1.0.0` release tag. The dataset license is CC BY-NC 4.0. Publication status and terms are documented on that dataset page. Code and data revisions are independent; use the documented tag or commit for reproducible downloads.
+The Hugging Face repository is `skywalker-p/PAIR`, with a planned `v1.0.0` release tag. The dataset license is CC BY-NC 4.0. Publication status and terms are documented on that dataset page. Code and data revisions are independent; use the documented tag or commit for reproducible downloads. During upload, large EEG arrays are represented by lossless 4 MiB parts; the final public tag will be created only after every part and reconstructed file passes its recorded SHA-256 digest.
 
 ## Files
 
@@ -22,10 +22,11 @@ The frequency bands described in the manuscript are 1–4, 4–8, 8–14, 14–3
 
 ```bash
 uv run pair-eeg download --data-dir data
+uv run pair-eeg assemble-data --data-dir data
 uv run pair-eeg validate-data --data-dir data
 ```
 
-Validation checks sizes, SHA-256 digests, shapes, dtypes and finite values. `--headers-only` skips hashes/value scans. `--include 'watch_PSD_DE/*'` supports partial downloads; a complete-manifest validation requires every listed file.
+Validation checks sizes, SHA-256 digests, shapes, dtypes and finite values. `assemble-data` restores chunked files and validates their reconstructed bytes. `--headers-only` skips hashes/value scans. `--include 'watch_PSD_DE/*'` supports partial downloads; a complete-manifest validation requires every listed file.
 
 ```python
 import numpy as np

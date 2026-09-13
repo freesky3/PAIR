@@ -1,0 +1,149 @@
+{
+  "environment": {
+    "python": "3.11.13",
+    "platform": "Linux-5.4.0-216-generic-x86_64-with-glibc2.31",
+    "packages": {
+      "torch": "2.5.1+cu121",
+      "numpy": "2.1.2",
+      "scipy": "1.16.1",
+      "scikit-learn": "1.7.1",
+      "torch-geometric": "2.5.1",
+      "einops": "0.8.2"
+    },
+    "cuda": "12.1",
+    "cudnn": 90100,
+    "gpu": "NVIDIA L40"
+  },
+  "device": "cuda:0",
+  "description": "Real-data refactor comparison; not an independent test evaluation.",
+  "archive_warning": "Historical configuration/RNG/environment were not fully archived; legacy-vs-refactored equality and archive agreement are separate checks.",
+  "dataset_manifest_sha256": "d123ee8cc26f0d66e389a252855b995bbf838b207288aabbf7ec9f22ff74b8ed",
+  "cases": {
+    "eegnet_raw_watch": {
+      "config": {
+        "task": "20-c",
+        "model": "eegnet",
+        "feature": "raw",
+        "condition": "watch",
+        "mode": "paper",
+        "seed": 42,
+        "epochs": 400,
+        "patience": 40,
+        "learning_rate": 0.001,
+        "weight_decay": 0.0001,
+        "batch_size": 16,
+        "num_workers": 4,
+        "remove_alpha": false,
+        "legacy_output_classes": null,
+        "strict_determinism": false,
+        "actual_feature": "raw",
+        "classes": 20
+      },
+      "comparisons": [
+        {
+          "source_index": 0,
+          "subject_id": "sub-001",
+          "recording_id": "recording-01",
+          "split_equal": true,
+          "epochs": [
+            46,
+            46
+          ],
+          "trace_exact": true,
+          "max_trace_absolute_difference": 0.0,
+          "checkpoint_exact": true,
+          "max_checkpoint_absolute_difference": 0.0,
+          "legacy_best_validation": 8.0,
+          "refactored_best_validation": 8.0,
+          "archived_validation": 12.0,
+          "refactored_minus_archived_pp": -4.0
+        }
+      ],
+      "seconds": 73.15
+    },
+    "mlp_psd_watch": {
+      "config": {
+        "task": "4-c",
+        "model": "mlpnet",
+        "feature": "psd",
+        "condition": "watch",
+        "mode": "paper",
+        "seed": 42,
+        "epochs": 400,
+        "patience": 40,
+        "learning_rate": 0.001,
+        "weight_decay": 0.0001,
+        "batch_size": 16,
+        "num_workers": 4,
+        "remove_alpha": false,
+        "legacy_output_classes": null,
+        "strict_determinism": false,
+        "actual_feature": "psd",
+        "classes": 4
+      },
+      "comparisons": [
+        {
+          "source_index": 0,
+          "subject_id": "sub-001",
+          "recording_id": "recording-01",
+          "split_equal": true,
+          "epochs": [
+            67,
+            67
+          ],
+          "trace_exact": true,
+          "max_trace_absolute_difference": 0.0,
+          "checkpoint_exact": true,
+          "max_checkpoint_absolute_difference": 0.0,
+          "legacy_best_validation": 28.0,
+          "refactored_best_validation": 28.0,
+          "archived_validation": 36.0,
+          "refactored_minus_archived_pp": -8.0
+        }
+      ],
+      "seconds": 98.95
+    },
+    "mlp_de_state": {
+      "config": {
+        "task": "state",
+        "model": "mlpnet",
+        "feature": "de",
+        "condition": "watch",
+        "mode": "paper",
+        "seed": 42,
+        "epochs": 400,
+        "patience": 40,
+        "learning_rate": 0.001,
+        "weight_decay": 0.0001,
+        "batch_size": 128,
+        "num_workers": 4,
+        "remove_alpha": false,
+        "legacy_output_classes": null,
+        "strict_determinism": false,
+        "actual_feature": "de",
+        "classes": 2
+      },
+      "comparisons": [
+        {
+          "source_index": 0,
+          "subject_id": "sub-001",
+          "recording_id": "recording-01",
+          "split_equal": true,
+          "epochs": [
+            84,
+            84
+          ],
+          "trace_exact": true,
+          "max_trace_absolute_difference": 0.0,
+          "checkpoint_exact": true,
+          "max_checkpoint_absolute_difference": 0.0,
+          "legacy_best_validation": 98.0,
+          "refactored_best_validation": 98.0,
+          "archived_validation": 98.0,
+          "refactored_minus_archived_pp": 0.0
+        }
+      ],
+      "seconds": 135.5
+    }
+  }
+}

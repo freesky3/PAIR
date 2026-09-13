@@ -17,14 +17,15 @@ Outputs go to `outputs/paper/`. This command reads archived scores and does **no
 
 ## Dataset status
 
-Anonymous EEG, PSD/DE features and metadata have been prepared for the Hugging Face dataset `skywalker-p/PAIR`. The data release uses **CC BY-NC 4.0**: attribution is required and noncommercial use/adaptation is permitted; commercial use requires separate permission. The repository code uses **MIT** for original PAIR code. Historical and third-party files retain their original terms; see `THIRD_PARTY_NOTICES.md`. The download command will work once the `v1.0.0` dataset tag is published. Eye tracking and source videos are not included.
+Anonymous EEG, PSD/DE features and metadata have been prepared for the Hugging Face dataset `skywalker-p/PAIR`. The data release uses **CC BY-NC 4.0**: attribution is required and noncommercial use/adaptation is permitted; commercial use requires separate permission. The repository code uses **MIT** for original PAIR code. Historical and third-party files retain their original terms; see `THIRD_PARTY_NOTICES.md`. The dataset is being uploaded as lossless 4 MiB parts so interrupted transfers can resume; the `v1.0.0` tag will be published only after reconstruction and hash verification. Eye tracking and source videos are not included.
 
 ```bash
 uv run pair-eeg download --data-dir data
+uv run pair-eeg assemble-data --data-dir data
 uv run pair-eeg validate-data --data-dir data
 ```
 
-The release is about 7.59 GB. See [data layout and limitations](docs/data.md) for dimensions, label definitions, provenance, and missing acquisition details.
+The release is about 7.59 GB after reconstruction; a chunked download temporarily needs additional disk space. See [data layout and limitations](docs/data.md) for dimensions, label definitions, provenance, and missing acquisition details.
 
 ## Run an explicit new experiment
 

@@ -24,6 +24,10 @@ def parser() -> argparse.ArgumentParser:
     )
     validate.add_argument("--data-dir", type=Path, default=Path("data"))
     validate.add_argument("--headers-only", action="store_true")
+    assemble = commands.add_parser(
+        "assemble-data", help="Restore chunked NPY files and verify their hashes."
+    )
+    assemble.add_argument("--data-dir", type=Path, default=Path("data"))
     paper = commands.add_parser(
         "reproduce-paper", help="Regenerate tables/figures from archived scores; no training."
     )
@@ -80,6 +84,10 @@ def main(argv: list[str] | None = None) -> None:
         from pair_eeg.data.release import validate
 
         print(json.dumps(validate(args.data_dir, not args.headers_only), indent=2))
+    elif args.command == "assemble-data":
+        from pair_eeg.data.chunks import assemble
+
+        print(json.dumps(assemble(args.data_dir), indent=2))
     elif args.command == "reproduce-paper":
         from pair_eeg.analysis.sensors import plot
         from pair_eeg.analysis.statistics import plot_content, summarize
